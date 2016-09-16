@@ -95,6 +95,16 @@ module.exports = function(app) {
           res.status(500).json(erro);
           logger.log('error', 'An error has occurred while deleting a topic by id %s', _id, erro);
         });
+      },
+
+      clearTopics: function(cb) {
+        Topics.remove({}).exec()
+        .then(function() {
+          cb(null, true);
+        },
+        function(erro) {
+          cb(erro, false);
+        })
       }
     };
 
