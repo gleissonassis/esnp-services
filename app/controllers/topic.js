@@ -93,7 +93,7 @@ module.exports = function(app) {
         },
         function(erro) {
           res.status(500).json(erro);
-          logger.log('error', 'An error has occurred while deleting a topic by id %s', _id, erro);
+          logger.log('error', 'An error has occurred while deleting a topic by id %s 1', _id, erro);
         });
       }
     };
