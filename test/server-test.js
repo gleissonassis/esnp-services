@@ -6,7 +6,6 @@ describe('server', () => {
     var server;
     var currentTopic = null;
 
-
     before(() => {
         server = require('../server');
     });
