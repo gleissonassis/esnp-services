@@ -1,0 +1,25 @@
+{
+  "name": "espn-services",
+  "version": "0.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "./node_modules/.bin/mocha --reporter spec",
+    "start": "node server.js"
+  },
+  "author": "Gleisson de Assis",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "chai": "^3.5.0",
+    "express": "^4.14.0",
+    "express-load": "^1.1.15",
+    "method-override": "^2.3.6",
+    "mocha": "^3.0.2",
+    "mongodb": "^2.2.5",
+    "mongoose": "^4.5.7",
+    "morgan": "^1.7.0",
+    "supertest": "^2.0.0",
+    "winston": "^2.2.0"
+  }
+}
