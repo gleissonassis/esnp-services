@@ -8,11 +8,18 @@ module.exports = function(app) {
         logger.log('info', 'Getting topics from database');
 
         var d = req.query.date;
+        var c = req.query.category;
 
         var f = {};
+
         if(d) {
-          f = {'date': {$gt: d}};
-          logger.log('debug', 'A date querystring parameter was set', f);
+          f.date = {$gt: d};
+          logger.log('debug', 'A date querystring parameter was set', d);
+        }
+
+        if(c) {
+          f.category = c;
+          logger.log('debug', 'A category querystring parameter was set', c);
         }
 
         Topics.find(f)

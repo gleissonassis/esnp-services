@@ -15,6 +15,11 @@ module.exports = function() {
     app.use(bodyParser.json());
     app.use(require('method-override')());
     app.use(morgan('dev'));
+     app.use(function(req, res, next) {
+      res.header('Access-Control-Allow-Origin', '*');
+      res.header('Access-Control-Allow-Headers', 'X-Requested-With');
+      next();
+    });
 
     load('models', {cwd:'app'})
     .then('controllers')

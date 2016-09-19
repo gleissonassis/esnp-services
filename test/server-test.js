@@ -17,7 +17,7 @@ describe('server', () => {
     describe('/api', () => {
         it('should be operational', (done) => {
             request(server)
-                .get('/api')
+                .get('/v1/api')
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)
                 .expect(200, done);
@@ -34,7 +34,7 @@ describe('server', () => {
                 };
 
             request(server)
-                .post('/api/topics')
+                .post('/v1/api/topics')
                 .send(newTopic)
                 .set('Accept', 'application/json')   
                 .expect('Content-Type', /json/)
@@ -49,7 +49,7 @@ describe('server', () => {
 
         it('should return a specifc topic', (done) => {
             request(server)
-                .get('/api/topics/' + currentTopic._id)
+                .get('/v1/api/topics/' + currentTopic._id)
                 .set('Accept', 'application/json')   
                 .expect('Content-Type', /json/)
                 .expect(200, (err, res) => {
@@ -63,7 +63,7 @@ describe('server', () => {
 
         it('should return 404 to a not existing topic', (done) => {
             request(server)
-                .get('/api/topics/null')
+                .get('/v1/api/topics/null')
                 .set('Accept', 'application/json')   
                 .expect('Content-Type', /json/)
                 .expect(404, done);
@@ -71,7 +71,7 @@ describe('server', () => {
 
         it('should return a list of topics', (done) => {
             request(server)
-                .get('/api/topics')
+                .get('/v1/api/topics')
                 .set('Accept', 'application/json')   
                 .expect('Content-Type', /json/)
                 .expect(200, done);
@@ -79,25 +79,57 @@ describe('server', () => {
 
         it('should return a list of topics using date param', (done) => {
             request(server)
-                .get('/api/topics?d=2016-09-15')
+                .get('/v1/api/topics?date=2016-09-15')
                 .set('Accept', 'application/json')   
                 .expect('Content-Type', /json/)
                 .expect(200, done);
         });
 
+        it('should return a empty list of topics using category param with a non existing category', (done) => {
+            request(server)
+                .get('/v1/api/topics?category=UNDEFINED_CATEGORY')
+                .set('Accept', 'application/json')   
+                .expect('Content-Type', /json/)
+                .expect(200, (err, res) => {
+                    expect(res.body.length).to.equal(0);
+                    done();
+                });
+        });
+
+        it('should return a list of topics using category param with a existing category', (done) => {
+            request(server)
+                .get('/v1/api/topics?category=TD')
+                .set('Accept', 'application/json')   
+                .expect('Content-Type', /json/)
+                .expect(200, (err, res) => {
+                    expect(res.body.length).be.at.least(1);
+                    done();
+                });
+        });
+
         it('should delete a topic', (done) => {
             request(server)
-                .delete('/api/topics/' + currentTopic._id)
+                .delete('/v1/api/topics/' + currentTopic._id)
                 .expect(204, done);
         });
 
         it('should update a topic', (done) => {
             request(server)
-                .post('/api/topics')
+                .post('/v1/api/topics')
                 .send(currentTopic)
                 .set('Accept', 'application/json')   
                 .expect('Content-Type', /json/)
                 .expect(200, done);
         });
     });    
+
+    describe('/api/categories', () => {
+        it('should return a list of categories', (done) => {
+            request(server)
+                .get('/v1/api/categories')
+                .set('Accept', 'application/json')   
+                .expect('Content-Type', /json/)
+                .expect(200, done);
+        });
+    });
 });

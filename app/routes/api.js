@@ -1,6 +1,6 @@
 module.exports = function(app) {
     var controller = app.controllers.api;
 
-    app.route('/api')
+    app.route('/v1/api')
       .get(controller.getAPIInfo);
 }
