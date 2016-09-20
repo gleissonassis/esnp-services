@@ -1,0 +1,11 @@
+version: '2.0'
+esnpsrv:
+  build: .
+  links:
+    - esnpdb
+  ports:
+    - 9000:9000
+esnpdb:
+  image: mongo
+  volumes:
+    - /mnt/storage/mongo/esnpdb:/data/db:rw
