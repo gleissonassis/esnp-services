@@ -1,10 +1,12 @@
 esnpsrv:
+  container_name: esnpsrv
   build: .
   links:
     - esnpdb
   ports:
     - 3000:3000
 esnpdb:
+  container_name: esnpdb
   image: mongo
   volumes:
-    - /mnt/storage/mongo/esnpdb:/data/db:rw
+    - esnpdb:/data/db:rw
