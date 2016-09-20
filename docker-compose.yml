@@ -3,7 +3,7 @@ esnpsrv:
   links:
     - esnpdb
   ports:
-    - 9000:9000
+    - 3000:3000
 esnpdb:
   image: mongo
   volumes:

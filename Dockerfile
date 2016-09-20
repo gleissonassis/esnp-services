@@ -10,5 +10,5 @@ RUN npm install -g npm bower grunt-cli gulp
 COPY . /src
 RUN cd /src; npm install
 
-EXPOSE 9000
+EXPOSE 3000
 CMD [ "node", "/src/app.js" ]
