@@ -69,7 +69,7 @@ module.exports = () => {
                     //   });
 
                     //   // Set up the sender with you API key, prepare your recipients' registration tokens. 
-                    //   var sender = new gcm.Sender('AIzaSyBdzy0wd6N9c2ChylknbmMRoygZzbfutN8');
+                    //   var sender = new gcm.Sender('');
                     //   var regTokens = ['c0vjQv5FUnc:APA91bGwoN0DWut2ZaliLdIwLPVlXgZt9j0A0Kx6nd1ucqDMsB28rJ4NdR55-hzzG0mfYIpenJGW_bESqVHJhWhgL35HufjznMsP7DdHBXeb00FsSP_4JpSVjzwYqg7Xpql8M8v7Lb5Q',
                     //   'c0vjQv5FUnc:APA91bGwoN0DWut2ZaliLdIwLPVlXgZt9j0A0Kx6nd1ucqDMsB28rJ4NdR55-hzzG0mfYIpenJGW_bESqVHJhWhgL35HufjznMsP7DdHBXeb00FsSP_4JpSVjzwYqg7Xpql8M8v7Lb5r'];
 
