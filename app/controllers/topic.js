@@ -1,109 +1,42 @@
-var logger    = require('winston'); 
+var logger      = require('winston'); 
+var business    = require('../business/topic')();
 
 module.exports = function(app) {
-    var Topics = app.models.topic;
-
-    var controller = {
-      getTopics: function(req, res) {
-        logger.log('info', 'Getting topics from database');
-
-        var d = req.query.date;
-        var c = req.query.category;
-
-        var f = {};
-
-        if(d) {
-          f.date = {$gt: d};
-          logger.log('debug', 'A date querystring parameter was set', d);
-        }
-
-        if(c) {
-          f.category = c;
-          logger.log('debug', 'A category querystring parameter was set', c);
-        }
-
-        Topics.find(f)
-        .sort('date')
-        .exec()
-        .then(
-          function(topics) {
-            res.status(200).json(topics);
-            logger.log('debug', '%d topics was returned', topics.length);
-          },
-          function(erro) {
-            res.status(500).json(erro);
-            logger.error('error', 'A error has occurred while getting topics from database');
-          }
-        );
-      },
-
-      saveTopic: function(req, res) {
-        var _id = req.body._id;
-
-        if(_id){
-          logger.log('info', 'Saving a topic', req.body);
-
-          Topics.findByIdAndUpdate(_id, req.body).exec()
-          .then(function(topic) {
-            res.status(200).json(topic)
-            logger.log('info', 'The topic has been updated succesfully');
-          },
-          function(erro) {
-            res.status(500).json(erro);
-            logger.log('error', 'An error has ocurred while updating a topic', erro);
-          });
-        } else {
-          logger.log('info', 'Saving a new topic', req.body);
-
-          Topics.create(req.body)
-          .then(function(topic) {
-            res.status(201).json(topic);
-            logger.log('info', 'The topic has been saved succesfully');
-          },
-          function(erro) {
-            logger.log('error', 'An error has ocurred while saving a new topic', erro);
-            res.status(500).json(erro);
-          })
-        }
-      },
-
-      getTopic: function(req, res) {
-        var _id = req.params.id;
-
-        logger.log('info', 'Getting a topic by id %s', _id);
-
-        Topics.findById(_id).exec()
-        .then(function(topic) {
-          if(!topic) {            
-            res.status(404).json({});
-            logger.log('info', 'No topic found');
-          } else {
-            res.status(200).json(topic);
-            logger.log('warn', 'Topic was found');
-          }
+    return {
+        getTopics: function(req, res) {
+            business.getTopics(req.query.date, req.query.category).then((items) => {
+                res.status(200).json(items);
+            }, (error) => {
+                res.status(500).json(error);
+            });
         },
-        function(erro) {
-          res.status(404).json(erro);
-          logger.log('error', 'An error has occurred while geeting a topic by id %s', _id, erro);
-        })
-      },
 
-      deleteTopic: function(req, res) {
-        var _id = req.params.id;
-        
-        logger.log('info', 'Deleting the topic by id %s', _id);
-
-        Topics.remove({ '_id': _id}).exec()
-        .then(function() {
-            res.status(204).end();
-            logger.log('info', 'The topic has been deleted succesfully');
+        saveTopic: function(req, res) {
+            business.saveTopic(req.body).then((r) => {
+                res.status(200).json(r.topic);
+            }, (error) => {
+                res.status(500).json(error);
+            });
         },
-        function(erro) {
-          res.status(500).json(erro);
-          logger.log('error', 'An error has occurred while deleting a topic by id %s 1', _id, erro);
-        });
-      }
+
+        getTopic: function(req, res) {
+            business.getTopic(req.params.id).then((item) => {
+                if(item) {
+                    res.status(200).json(item);
+                } else {
+                    res.status(404).json({});
+                }
+            }, (error) => {
+                res.status(404).json(error);
+            });
+        },
+
+        deleteTopic: function(req, res) {
+            business.deleteTopic(req.params.id).then((item) => {
+                res.status(204).end();
+            }, (error) => {
+                res.status(500).json(error);
+            });
+        }
     };
-
-    return controller;
 }

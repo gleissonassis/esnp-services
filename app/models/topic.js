@@ -1,5 +1,7 @@
 var mongoose = require('mongoose');
 
+var model = null;
+
 module.exports = function(){
   var schema = mongoose.Schema({
     title :{
@@ -21,8 +23,16 @@ module.exports = function(){
     body :{
       type: String,
       required: false
-    }
+    },
+    url :{
+      type: String,
+      required: false
+    },
   });
-
-  return mongoose.model('Topics', schema);
+  
+  if(model) {
+    return model;
+  } else {
+    return model = mongoose.model('Topics', schema);
+  }
 }

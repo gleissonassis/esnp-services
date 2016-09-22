@@ -19,6 +19,8 @@
     "mongodb": "^2.2.5",
     "mongoose": "^4.5.7",
     "morgan": "^1.7.0",
+    "node-gcm": "^0.14.4",
+    "promise": "^7.1.1",
     "supertest": "^2.0.0",
     "winston": "^2.2.0"
   }

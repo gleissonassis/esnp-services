@@ -30,7 +30,7 @@ describe('server', () => {
                     title: 'Teste de tópico',
                     thumbUrl: '/url',
                     category: 'TD',
-                    date: new Date(2016, 09, 16)
+                    date: new Date(2016, 09, 16)                    
                 };
 
             request(server)
@@ -127,6 +127,30 @@ describe('server', () => {
         it('should return a list of categories', (done) => {
             request(server)
                 .get('/v1/api/categories')
+                .set('Accept', 'application/json')   
+                .expect('Content-Type', /json/)
+                .expect(200, done);
+        });
+    });
+
+     describe('/api/subscribers', () => {
+         var subscriber = {
+             registrationId: Date.now()
+         };
+
+        it('should store a new subscriber', (done) => {
+            request(server)
+                .post('/v1/api/subscribers')
+                .send(subscriber)
+                .set('Accept', 'application/json')   
+                .expect('Content-Type', /json/)
+                .expect(201, done);
+        });
+
+        it('should update a subscriber', (done) => {
+            request(server)
+                .post('/v1/api/subscribers')
+                .send(subscriber)
                 .set('Accept', 'application/json')   
                 .expect('Content-Type', /json/)
                 .expect(200, done);
