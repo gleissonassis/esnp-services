@@ -1,16 +1,17 @@
-var mongoose = require('mongoose');
+var mongoose    = require('mongoose');
+var appSettings = require('./settings')
 
-module.exports = function(uri){
-  mongoose.connect(uri);
+module.exports = function(){
+  mongoose.connect(appSettings.mongoUrl);
 
   mongoose.set('debug', true);
 
   mongoose.connection.on('connected', function() {
-    console.log('Mongoose! Connected at ' + uri);
+    console.log('Mongoose! Connected at ' + appSettings.mongoUrl);
   });
 
   mongoose.connection.on('disconnected', function() {
-    console.log('Mongoose! Disconnected em ' + uri);
+    console.log('Mongoose! Disconnected em ' + appSettings.mongoUrl);
   });
 
   mongoose.connection.on('error', function(erro) {
