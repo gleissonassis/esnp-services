@@ -4,7 +4,7 @@ var http    = require('http');
 var app     = require('./config/express')();
               require('./config/database.js')(mongoUrl);
 
-var server = http.createServer(app).listen(app.get('port'), '0.0.0.0', function() {
+var server = http.createServer(app).listen(app.get('port'), function() {
     console.log('Express is running on port ' + app.get('port'));
 });
 
