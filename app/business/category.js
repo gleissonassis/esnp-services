@@ -2,7 +2,7 @@ var logger          = require('winston');
 var Topics          = require('../models/topic')();
 var Promise         = require('promise');
 
-module.exports = () => {
+module.exports = function() {
     return {
         getCategories: () => {
             return new Promise((resolve, reject) => {

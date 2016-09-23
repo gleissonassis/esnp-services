@@ -61,23 +61,6 @@ module.exports = () => {
                 } else {
                     logger.log('info', 'Saving a new topic', topic);
 
-                    // var gcm = require('node-gcm');
-
-                    //   var message = new gcm.Message({
-                    //       data: { title: req.body.title,
-                    //               message: req.body.body }
-                    //   });
-
-                    //   // Set up the sender with you API key, prepare your recipients' registration tokens. 
-                    //   var sender = new gcm.Sender('');
-                    //   var regTokens = ['c0vjQv5FUnc:APA91bGwoN0DWut2ZaliLdIwLPVlXgZt9j0A0Kx6nd1ucqDMsB28rJ4NdR55-hzzG0mfYIpenJGW_bESqVHJhWhgL35HufjznMsP7DdHBXeb00FsSP_4JpSVjzwYqg7Xpql8M8v7Lb5Q',
-                    //   'c0vjQv5FUnc:APA91bGwoN0DWut2ZaliLdIwLPVlXgZt9j0A0Kx6nd1ucqDMsB28rJ4NdR55-hzzG0mfYIpenJGW_bESqVHJhWhgL35HufjznMsP7DdHBXeb00FsSP_4JpSVjzwYqg7Xpql8M8v7Lb5r'];
-
-                    //   sender.send(message, { registrationTokens: regTokens }, function (err, response) {
-                    //       if(err) console.error("ASDASDAS " + err);
-                    //       else 	console.log(response);
-                    //   });
-
                     Topics.create(topic)
                     .then((item) => {
                         logger.log('info', 'The topic has been saved succesfully');

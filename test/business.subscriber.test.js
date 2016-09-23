@@ -48,5 +48,9 @@ describe('business > subscriber', () => {
                 }, done);
             },done);
         });
+
+        it('should delete a subscribers', (done) => {
+            subscriber.deleteSubscriber(storedSubscriber._id).then(done, done);
+        });
     });
 });

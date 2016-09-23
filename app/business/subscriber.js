@@ -2,7 +2,7 @@ var logger          = require('winston');
 var Subscribers     = require('../models/subscriber')();
 var Promise         = require('promise');
 
-module.exports = () => {
+module.exports = function() {
     return {
         clearSubscribers: () => {
             return new Promise((resolve, reject) => {
@@ -74,6 +74,21 @@ module.exports = () => {
                     reject(erro);
                 });
             });    
+        },
+
+        deleteSubscriber: (id) => {
+            return new Promise((resolve, reject) => {
+                logger.log('info', 'Deleting the subscriber by id %s', id);
+
+                Subscribers.remove({'_id': id}).exec()
+                .then(() => {
+                    logger.log('info', 'The subscriber has been deleted succesfully');
+                    resolve();
+                },(erro) => {
+                    logger.log('error', 'An error has occurred while deleting a subscriber by id %s 1', id, erro);
+                    reject(erro);
+                });
+            })
         }
     };
 }
