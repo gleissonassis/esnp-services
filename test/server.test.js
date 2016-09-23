@@ -1,13 +1,23 @@
-var request             = require('supertest');
-var chai                = require('chai');
-var expect              = chai.expect;
+var request     = require('supertest');
+var chai        = require('chai');
+var expect      = chai.expect;
+var jwtHelper   = require('../app/helpers/jwtHelper')();
 
 describe('server', () => {
     var server;
     var currentTopic = null;
+    var token = null;
+
+    var newTopic = {
+        title: 'Teste de tópico',
+        thumbUrl: '/url',
+        category: 'TD',
+        date: new Date(2016, 09, 16)                    
+    };
 
     before(() => {
         server = require('../server');
+        token = jwtHelper.createToken({userName: 'user'});
     });
 
     after(() => {
@@ -25,18 +35,22 @@ describe('server', () => {
     });
 
     describe('/api/topics', () => {
-        it('should store a new topic', (done) => {
-            var newTopic = {
-                    title: 'Teste de tópico',
-                    thumbUrl: '/url',
-                    category: 'TD',
-                    date: new Date(2016, 09, 16)                    
-                };
-
+        it('should return 403 to store a new topic with a invalid token', (done) => {
             request(server)
                 .post('/v1/api/topics')
                 .send(newTopic)
                 .set('Accept', 'application/json')   
+                .set('x-access-token', 'INVALID')
+                .expect('Content-Type', /json/)
+                .expect(403, done);
+        });
+
+        it('should store a new topic', (done) => {
+            request(server)
+                .post('/v1/api/topics')
+                .send(newTopic)
+                .set('Accept', 'application/json')   
+                .set('x-access-token', token)
                 .expect('Content-Type', /json/)
                 .expect(201, (err, res) => {
                     currentTopic = res.body;
@@ -107,10 +121,14 @@ describe('server', () => {
                 });
         });
 
-        it('should delete a topic', (done) => {
+        it('should return 403 to update a topic with a invalid token', (done) => {
             request(server)
-                .delete('/v1/api/topics/' + currentTopic._id)
-                .expect(204, done);
+                .post('/v1/api/topics')
+                .send(currentTopic)
+                .set('Accept', 'application/json')   
+                .set('x-access-token', 'INVALID')
+                .expect('Content-Type', /json/)
+                .expect(403, done);
         });
 
         it('should update a topic', (done) => {
@@ -118,8 +136,29 @@ describe('server', () => {
                 .post('/v1/api/topics')
                 .send(currentTopic)
                 .set('Accept', 'application/json')   
+                .set('x-access-token', token)
                 .expect('Content-Type', /json/)
-                .expect(200, done);
+                .expect(200, (err, res) => {
+                    expect(res.body._id).to.equal(currentTopic._id);
+                    expect(res.body.title).to.equal(currentTopic.title);
+                    expect(res.body.thumbUrl).to.equal(currentTopic.thumbUrl);
+                    expect(res.body.category).to.equal(currentTopic.category);
+                    done();
+                });
+        });
+
+        it('should return 403 to delete a topic with a invalid token', (done) => {
+            request(server)
+                .delete('/v1/api/topics/' + currentTopic._id)
+                .set('x-access-token', 'INVALID')
+                .expect(403, done);
+        });
+
+        it('should delete a topic', (done) => {
+            request(server)
+                .delete('/v1/api/topics/' + currentTopic._id)
+                .set('x-access-token', token)
+                .expect(204, done);
         });
     });    
 

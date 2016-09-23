@@ -3,8 +3,8 @@ module.exports = function(app) {
 
     app.route('/v1/api/topics')
       .get(controller.getTopics)
-      .post(controller.saveTopic);
+      .post(app.requireLogin, controller.saveTopic);
     app.route('/v1/api/topics/:id')
       .get(controller.getTopic)
-      .delete(controller.deleteTopic);
+      .delete(app.requireLogin, controller.deleteTopic);
 }

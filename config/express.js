@@ -4,9 +4,21 @@ var bodyParser  = require('body-parser');
 var morgan      = require('morgan');
 var logger      = require('winston');
 var appSettings = require('./settings');
+var jwtHelper   = require('../app/helpers/jwtHelper')();
 
 module.exports = function() {
     var app = express();
+
+    app.requireLogin = (req, res, next) => {
+        var token = req.headers['x-access-token'];
+        jwtHelper.verify(token, (error, decoded) => {
+            if(!error) {
+                next();
+            } else {
+                res.status(403).json({});
+            }
+        });
+    }
 
     logger.level = 'debug';
 

@@ -4,7 +4,7 @@ var adHelper    = require('../app/helpers/adHelper')();
 
 describe('ad-helper', function() {
     describe('auth', function() {
-        it('deve autenticar um usuário existente', function(done) {
+        it('should authenticate a valid user', function(done) {
             adHelper.auth(config.validUserData.userName, config.validUserData.password, function(err,auth) {
                 if(err) {
                     done(err);
@@ -14,7 +14,7 @@ describe('ad-helper', function() {
             });
         }); 
 
-        it('deve falhar ao autenticar um usuário inexistente', function(done) {
+        it('should fail to authenticate a invalid user', function(done) {
             adHelper.auth(config.invalidUserData.userName, config.invalidUserData.password, function(err,auth) {
                 if(err) {
                     done()

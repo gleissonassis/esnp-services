@@ -33,7 +33,7 @@ module.exports = () => {
                     logger.log('debug', 'A category querystring parameter was set', category);
                 }
                 Topics.find(filter)
-                .sort('date')
+                .sort({'date':1})
                 .exec()
                 .then((items) => {
                     logger.log('info', '%d topics were returned', items.length);
@@ -48,7 +48,7 @@ module.exports = () => {
         saveTopic: function(topic) {
             return new Promise((resolve, reject) => {
                 if(topic._id){
-                    logger.log('info', 'Saving a topic', topic);
+                    logger.log('info', 'Saving a topic');
 
                     Topics.findByIdAndUpdate(topic._id, topic).exec()
                     .then((item) => {
