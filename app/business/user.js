@@ -5,7 +5,7 @@ var jwtHelper       = require('../helpers/jwtHelper')();
 
 module.exports = function() {
     return {
-        authenticateUser: (userName, password) => {
+        authenticateUser: function(userName, password) {
             return new Promise((resolve, reject) => {
                 try {
                     adHelper.auth(userName, password, function(err, auth) {
@@ -22,7 +22,7 @@ module.exports = function() {
             });
         },
 
-        verifyToken : (token) => {
+        verifyToken : function(token) {
             return new Promise((resolve, reject) => {
                 jwtHelper.verify(token, function(error, decoded) {
                     if (err) {

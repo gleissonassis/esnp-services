@@ -1,10 +1,11 @@
 var logger          = require('winston');
 var Topics          = require('../models/topic')();
 var Promise         = require('promise');
+var Notifier        = require('./notifier');
 
-module.exports = () => {
+module.exports = function() {
     return {
-        clearTopics: () => {
+        clearTopics: function() {
             return new Promise((resolve, reject) => {
                 Topics.remove({}).exec()
                 .then(() => {
@@ -17,7 +18,7 @@ module.exports = () => {
             });            
         },
 
-        getTopics: (date, category) => {
+        getTopics: function(date, category) {
             return new Promise((resolve, reject) => {
                 logger.log('info', 'Getting topics from database');
 
@@ -46,6 +47,8 @@ module.exports = () => {
         },
 
         saveTopic: function(topic) {
+            var notifier = new Notifier();
+
             return new Promise((resolve, reject) => {
                 if(topic._id){
                     logger.log('info', 'Saving a topic');
@@ -54,6 +57,7 @@ module.exports = () => {
                     .then((item) => {
                         logger.log('info', 'The topic has been updated succesfully');
                         resolve({topic: item, isInserted: false});
+                        notifier.notifySubscribers(topic);
                     }, (erro) => {
                         logger.log('error', 'An error has ocurred while updating a topic', erro);
                         reject(erro);
@@ -65,6 +69,7 @@ module.exports = () => {
                     .then((item) => {
                         logger.log('info', 'The topic has been saved succesfully');
                         resolve({topic: item, isInserted: true});
+                        notifier.notifySubscribers(topic);
                     }, (erro) => {
                         logger.log('error', 'An error has ocurred while saving a new topic', erro);
                         reject(erro);

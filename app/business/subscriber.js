@@ -4,7 +4,7 @@ var Promise         = require('promise');
 
 module.exports = function() {
     return {
-        clearSubscribers: () => {
+        clearSubscribers: function() {
             return new Promise((resolve, reject) => {
                 Subscribers.remove({}).exec()
                 .then(() => {
@@ -17,7 +17,7 @@ module.exports = function() {
             });            
         },
 
-        getSubscribers: () => {
+        getSubscribers: function() {
             return new Promise((resolve, reject) => {
                 logger.log('info', 'Getting all subscribers');
 
@@ -33,7 +33,7 @@ module.exports = function() {
             });   
         },
 
-        saveSubscriber: (subscriber) => {
+        saveSubscriber: function(subscriber) {
             return new Promise((resolve, reject) => {
                 logger.log('info', 'Saving subscriber');
                 
@@ -76,7 +76,7 @@ module.exports = function() {
             });    
         },
 
-        deleteSubscriber: (id) => {
+        deleteSubscriber: function(id) {
             return new Promise((resolve, reject) => {
                 logger.log('info', 'Deleting the subscriber by id %s', id);
 

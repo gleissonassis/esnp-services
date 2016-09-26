@@ -4,7 +4,7 @@ var Promise         = require('promise');
 
 module.exports = function() {
     return {
-        getCategories: () => {
+        getCategories: function() {
             return new Promise((resolve, reject) => {
                 logger.log('info', 'Getting categories from database');
 

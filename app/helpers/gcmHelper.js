@@ -5,7 +5,7 @@ var Promise     = require('promise');
 
 module.exports = function() {
     return {
-        sendMessage: (token, title, message) => {
+        sendMessage: function(token, title, message) {
             logger.log('info', 'Starting notification', {
                 token: token,
                 title: title,

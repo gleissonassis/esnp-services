@@ -3,7 +3,7 @@ var business    = require('../business/category')();
 
 module.exports = function(app) {
     return {
-        getCategories: (req, res) => {
+        getCategories: function(req, res) {
             business.getCategories().then((items) => {
                 res.status(200).json(items);
             }, (error) => {
